@@ -1,0 +1,64 @@
+{
+    "name": "Super Soccer Frog (PC)",
+    "description": "W: Jump\nQ: Up Kick\nE: Forward Kick\nS: Down Kick\nKick the ball into the goal!",
+    "dependencies": {
+        "device": "*",
+        "arcade-sprite-util": "github:jwunderl/arcade-sprite-util#v0.6.0",
+        "Timers": "github:microsoft/arcade-timers#v1.1.0",
+        "arcade-character-animations": "github:microsoft/arcade-character-animations#v0.1.0",
+        "BetterArrays": "github:sargedev/betterarrays#v1.2.2",
+        "arcade-tile-scanner": "github:riknoll/arcade-tile-scanner#v0.0.1",
+        "arcade-tile-util": "github:microsoft/arcade-tile-util#v1.2.0",
+        "pxt-javascript-extras": "github:WoofWoofCodes/pxt-javascript-extras#v0.5.0",
+        "arcade-mini-menu": "github:riknoll/arcade-mini-menu#v0.1.0",
+        "settings-blocks": "github:microsoft/pxt-settings-blocks#v1.0.0",
+        "arcade-multi-events": "github:riknoll/arcade-multi-events#764fdc7d175d66740bf5bef4a6aa2dfd40722381",
+        "arcade-fancy-text": "github:riknoll/arcade-fancy-text#v0.2.1",
+        "color": "*",
+        "Color Fading": "github:jwunderl/pxt-color#v0.2.3",
+        "browser-events": "*"
+    },
+    "files": [
+        "main.blocks",
+        "main.ts",
+        "README.md",
+        "assets.json",
+        "images.g.jres",
+        "images.g.ts",
+        "tilemap.g.jres",
+        "tilemap.g.ts"
+    ],
+    "testFiles": [
+        "test.ts"
+    ],
+    "targetVersions": {
+        "branch": "stable4.0",
+        "tag": "v4.0.14",
+        "commits": "https://github.com/microsoft/pxt-arcade/commits/a33ec9537bc6c5fada2a3b02aac57a4bc9a10803",
+        "target": "4.1.17",
+        "pxt": "12.2.34",
+        "targetId": "arcade"
+    },
+    "supportedTargets": [
+        "arcade"
+    ],
+    "preferredEditor": "blocksprj",
+    "palette": [
+        "#000000",
+        "#f4f4f4",
+        "#b13e53",
+        "#a7f070",
+        "#ef7d57",
+        "#ffcd75",
+        "#257179",
+        "#38b764",
+        "#29366f",
+        "#3b5dc9",
+        "#41a6f6",
+        "#566c86",
+        "#333c57",
+        "#94b0c2",
+        "#5d275d",
+        "#1a1c2c"
+    ]
+}
