@@ -1,15 +1,6 @@
 namespace SpriteKind {
     export const BallKind = SpriteKind.create()
 }
-scene.onOverlapTile(SpriteKind.Player, assets.tile`Checkpoint`, function (sprite, location) {
-    timer.throttle("Checkpoint", 1000, function () {
-        if (!(HasBall)) {
-            sprite.startEffect(effects.confetti, 500)
-            music.play(music.stringPlayable("E E G G C5 C5 C5 C5 ", 1000), music.PlaybackMode.InBackground)
-            HasBall = true
-        }
-    })
-})
 function Levels () {
     LevelsDataArray = [[0, 0, 0]]
     LevelsDataArray.pop()
@@ -22,7 +13,8 @@ function Levels () {
     tilemap`Level5`,
     tilemap`Level6`,
     tilemap`Level7`,
-    tilemap`Level8`
+    tilemap`Level8`,
+    tilemap`Test0`
     ]
     ReadingIndex = 0
     for (let value of LevelsTilemapArray) {
@@ -91,6 +83,42 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
             } else {
                 Player.vy = -250
                 music.play(music.createSoundEffect(WaveShape.Square, 1250, 2034, 99, 159, 100, SoundExpressionEffect.None, InterpolationCurve.Linear), music.PlaybackMode.InBackground)
+            }
+        }
+    }
+})
+controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
+    if (_1IsInMainMenu) {
+    	
+    } else {
+        if (HasBall) {
+            music.play(music.createSoundEffect(WaveShape.Noise, 3311, 712, 137, 128, 100, SoundExpressionEffect.None, InterpolationCurve.Linear), music.PlaybackMode.InBackground)
+            CanGrabBall = false
+            HasBall = false
+            Ball.setFlag(SpriteFlag.Ghost, false)
+            if (tiles.tileAtLocationIsWall(Ball.tilemapLocation())) {
+                scene.cameraShake(5, 200)
+                HasBall = true
+            } else {
+                if (controller.down.isPressed() && !(Player.isHittingTile(CollisionDirection.Bottom))) {
+                    Ball.vy = 150
+                    Ball.vx = Player.vx
+                    Player.vy = -175
+                    scene.cameraShake(4, 200)
+                } else if (controller.up.isPressed()) {
+                    Ball.vy = -225 + Player.vy / 2
+                    Ball.vx = Player.vx
+                    scene.cameraShake(3, 200)
+                } else {
+                    if (FacingRight) {
+                        Ball.vx = 150 + Player.vx
+                    } else {
+                        Ball.vx = -150 + Player.vx
+                    }
+                }
+                timer.after(250, function () {
+                    CanGrabBall = true
+                })
             }
         }
     }
@@ -248,21 +276,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`Checkpoint0`, function (sprit
     tiles.setTileAt(location, assets.tile`Checkpoint`)
     if (HasBall) {
         sprite.startEffect(effects.confetti, 500)
-        music.play(music.stringPlayable("E E G G C5 C5 C5 C5 ", 1000), music.PlaybackMode.InBackground)
-    }
-})
-scene.onHitWall(SpriteKind.BallKind, function (sprite, location) {
-    if (!(HasBall)) {
-        if (arrays.includes(BreakableArray, tiles.tileImageAtLocation(location))) {
-            tiles.setTileAt(location, assets.tile`transparency16`)
-            tiles.setWallAt(location, false)
-            scene.cameraShake(4, 200)
-        }
-        if (sprite.y < location.y && location.y - sprite.y < 12 || sprite.y > location.y && sprite.y - location.y < 12) {
-            music.play(music.createSoundEffect(WaveShape.Noise, 1541, 1, 222, 209, 100, SoundExpressionEffect.None, InterpolationCurve.Linear), music.PlaybackMode.InBackground)
-            sprite.vx = sprite.vx * -1 / 3
-            scene.cameraShake(4, 200)
-        }
+        music.play(music.stringPlayable("E E G G C5 C5 C5 C5 ", 623), music.PlaybackMode.InBackground)
     }
 })
 function BordersAutotile (BaseBlock: Image[], Tiles: Image[]) {
@@ -277,6 +291,9 @@ function BordersAutotile (BaseBlock: Image[], Tiles: Image[]) {
     tileScanner.setTileAtLocations(tileScanner.getAllMatchingLocations(tileScanner.and(tileScanner.tileIs(BaseBlock[0]), tileScanner.bordersSides(tileScanner.not(tileScanner.isWall()), tileScanner.sideGroups(CollisionDirection.Bottom, tileScanner.LogicOp.And, CollisionDirection.Left)))), ToMirroredImage(Tiles[3]))
     tileScanner.setTileAtLocations(tileScanner.getAllMatchingLocations(tileScanner.and(tileScanner.tileIs(BaseBlock[0]), tileScanner.bordersSides(tileScanner.not(tileScanner.isWall()), tileScanner.sideGroups(CollisionDirection.Bottom)))), images.rotate_image_block(Tiles[2], 90))
 }
+scene.onOverlapTile(SpriteKind.Player, assets.tile`Button2`, function (sprite, location) {
+    tiles.setCurrentTilemap(tilemap`Unused`)
+})
 browserEvents.Q.onEvent(browserEvents.KeyEvent.Pressed, function () {
     if (!(_1IsInMainMenu)) {
         UpKick()
@@ -308,6 +325,32 @@ multiEvents.onOverlapTile(multiEvents.spriteKinds(SpriteKind.Player, SpriteKind.
     }
     tileUtil.setWalls(assets.tile`ButtonTile`, false)
     tileUtil.replaceAllTiles(assets.tile`ButtonTile`, assets.tile`transparency16`)
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`Checkpoint`, function (sprite, location) {
+    timer.throttle("Checkpoint", 1000, function () {
+        if (!(HasBall)) {
+            sprite.startEffect(effects.confetti, 500)
+            music.play(music.stringPlayable("E E G G C5 C5 C5 C5 ", 1000), music.PlaybackMode.InBackground)
+            HasBall = true
+        }
+    })
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`BLUE TESTING BOX OF DOOM`, function (sprite, location) {
+	
+})
+scene.onHitWall(SpriteKind.BallKind, function (sprite, location) {
+    if (!(HasBall)) {
+        if (arrays.includes(BreakableArray, tiles.tileImageAtLocation(location))) {
+            tiles.setTileAt(location, assets.tile`transparency16`)
+            tiles.setWallAt(location, false)
+            scene.cameraShake(4, 200)
+        }
+        if (sprite.y < location.y && location.y - sprite.y < 12 || sprite.y > location.y && sprite.y - location.y < 12) {
+            music.play(music.createSoundEffect(WaveShape.Noise, 1615, 1, 177, 255, 100, SoundExpressionEffect.None, InterpolationCurve.Linear), music.PlaybackMode.InBackground)
+            sprite.vx = sprite.vx * -1 / 3
+            scene.cameraShake(4, 200)
+        }
+    }
 })
 multiEvents.onOverlapTile(multiEvents.spriteKinds(SpriteKind.Player), multiEvents.tileList(assets.tile`Coin1`, assets.tile`Coin2`), function (sprite, location) {
     music.play(music.melodyPlayable(music.baDing), music.PlaybackMode.InBackground)
@@ -448,44 +491,7 @@ function InitLevel (LevelNum: number) {
     tiles.placeOnRandomTile(Player, assets.tile`Checkpoint`)
     Player.y += -4
 }
-controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (_1IsInMainMenu) {
-    	
-    } else {
-        if (HasBall) {
-            music.play(music.createSoundEffect(WaveShape.Noise, 3311, 712, 137, 128, 100, SoundExpressionEffect.None, InterpolationCurve.Linear), music.PlaybackMode.InBackground)
-            CanGrabBall = false
-            HasBall = false
-            Ball.setFlag(SpriteFlag.Ghost, false)
-            if (tiles.tileAtLocationIsWall(Ball.tilemapLocation())) {
-                scene.cameraShake(5, 200)
-                HasBall = true
-            } else {
-                if (controller.down.isPressed() && !(Player.isHittingTile(CollisionDirection.Bottom))) {
-                    Ball.vy = 150
-                    Ball.vx = Player.vx
-                    Player.vy = -175
-                    scene.cameraShake(4, 200)
-                } else if (controller.up.isPressed()) {
-                    Ball.vy = -225 + Player.vy / 2
-                    Ball.vx = Player.vx
-                    scene.cameraShake(3, 200)
-                } else {
-                    if (FacingRight) {
-                        Ball.vx = 150 + Player.vx
-                    } else {
-                        Ball.vx = -150 + Player.vx
-                    }
-                }
-                timer.after(250, function () {
-                    CanGrabBall = true
-                })
-            }
-        }
-    }
-})
 let CanMove = false
-let FacingRight = false
 let LevelSelectMenuArray: miniMenu.MenuItem[] = []
 let GoalText: fancyText.TextSprite = null
 let CurrentLevel = 0
@@ -494,14 +500,15 @@ let MarathonTimerStart = 0
 let MarathonMode = false
 let MainMenu: Sprite = null
 let TitleSprite: Sprite = null
+let FacingRight = false
 let Ball: Sprite = null
 let CanGrabBall = false
 let Player: Sprite = null
+let HasBall = false
 let TempImg: Image = null
 let ReadingIndex = 0
 let LevelsTilemapArray: tiles.TileMapData[] = []
 let LevelsDataArray: number[][] = []
-let HasBall = false
 let BreakableArray: Image[] = []
 let _1IsInMainMenu = false
 let DevLevelCheese = false
@@ -513,12 +520,6 @@ game.setDialogFrame(assets.image`Frame`)
 _1IsInMainMenu = true
 BreakableArray = [assets.tile`Can Break`]
 TitleScreen()
-game.onUpdateInterval(50, function () {
-    if (!(_1IsInMainMenu) && MarathonMode) {
-        fancyText.setText(MarathonTimerSprite, convertToText((game.runtime() - MarathonTimerStart) / 1000))
-        MarathonTimerSprite.setPosition(80, 8)
-    }
-})
 game.onUpdate(function () {
     if (!(_1IsInMainMenu)) {
         if (HasBall) {
@@ -532,5 +533,11 @@ game.onUpdate(function () {
         } else {
             Ball.ay = 400
         }
+    }
+})
+game.onUpdateInterval(50, function () {
+    if (!(_1IsInMainMenu) && MarathonMode) {
+        fancyText.setText(MarathonTimerSprite, convertToText((game.runtime() - MarathonTimerStart) / 1000))
+        MarathonTimerSprite.setPosition(80, 8)
     }
 })
